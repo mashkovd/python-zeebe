@@ -13,7 +13,7 @@ class Zeebe:
     BPMN_DUMP_PATH = Path("/opt/working/src/zeebe/bpmn_dump")
     TASK_DEFAULT_PARAMS = {
         "exception_handler": error_handler,
-        "timeout": 60000,
+        "timeout_ms": 60000,
         "before": [log_decorator],
         "after": [log_decorator],
     }

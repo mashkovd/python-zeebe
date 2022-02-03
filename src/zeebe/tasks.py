@@ -1,15 +1,15 @@
 import logging
 from typing import Dict, List, Optional
 
-from pyzeebe import ZeebeWorker
+from pyzeebe import ZeebeWorker, create_insecure_channel
 
 from .settings import Zeebe
 
 logger = logging.getLogger()
 
-worker = ZeebeWorker(
-    hostname=Zeebe.ZEEBE_HOSTNAME, port=Zeebe.ZEEBE_PORT, max_connection_retries=Zeebe.ZEEBE_MAX_CONNECTION_RETRIES,
-)
+channel = create_insecure_channel(hostname=Zeebe.ZEEBE_HOSTNAME, port=Zeebe.ZEEBE_PORT)  # Create grpc channel
+
+worker = ZeebeWorker(channel)
 
 
 @worker.task(task_type="package-items", **Zeebe.TASK_DEFAULT_PARAMS)

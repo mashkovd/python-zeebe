@@ -31,7 +31,7 @@ def deploy_workflow_module(client: ZeebeClient, bpmn_file: UploadFile) -> str:
         logger.error("Could not open or write to the .bpmn file!")
 
     try:
-        client.deploy_workflow(bpmn_file_path)
+        client.deploy_process(bpmn_file_path)
         success_msg = ".bpmn deployment was successful!"
         logger.info(success_msg)
         return success_msg
@@ -57,7 +57,7 @@ def run_instance_module(client: ZeebeClient, bpmn_process_id: str, variables: Di
         str: Success or error message.
     """
     try:
-        workflow_instance_key = client.run_workflow(bpmn_process_id=bpmn_process_id, variables=variables)
+        workflow_instance_key = client.run_process(bpmn_process_id=bpmn_process_id, variables=variables)
         success_msg = f"Instance now running with workflow instance key: {workflow_instance_key}"
         logger.info(success_msg)
         return success_msg

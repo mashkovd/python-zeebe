@@ -2,7 +2,7 @@ import logging
 from typing import Dict
 
 from fastapi import APIRouter, File, UploadFile
-from pyzeebe import ZeebeClient
+from pyzeebe import ZeebeClient, create_insecure_channel
 
 from ..zeebe.modules import deploy_workflow_module, publish_message_module, run_instance_module
 from ..zeebe.settings import Zeebe
@@ -14,14 +14,14 @@ router = APIRouter()
 
 
 logger.info("Starting client")
-client = ZeebeClient(
-    hostname=Zeebe.ZEEBE_HOSTNAME,
-    port=Zeebe.ZEEBE_PORT,
-    max_connection_retries=Zeebe.ZEEBE_MAX_CONNECTION_RETRIES,
-)
+
+channel = create_insecure_channel(hostname=Zeebe.ZEEBE_HOSTNAME, port=Zeebe.ZEEBE_PORT)  # Create grpc channel
+
+
+client = ZeebeClient(channel)
 
 logger.info("Starting worker")
-worker.work(True)
+worker.work()
 
 
 @router.post("/deploy", description="Deploy .bpmn workflow")
